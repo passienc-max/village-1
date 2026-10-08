@@ -62,7 +62,8 @@ async def register(body: RegisterIn, response: Response):
 @router.post("/login")
 async def login(body: LoginIn, request: Request, response: Response):
     email = body.email.lower()
-    ip = request.client.host if request.client else "unknown"
+    fwd = request.headers.get("x-forwarded-for", "")
+    ip = fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "unknown")
     identifier = f"{ip}:{email}"
     attempt = await db.login_attempts.find_one({"identifier": identifier}, {"_id": 0})
     if attempt and attempt.get("count", 0) >= MAX_ATTEMPTS:
