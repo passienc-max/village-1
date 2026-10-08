@@ -1,0 +1,174 @@
+{
+  "project_name": "Parent Link — The Village (Klamath County, OR)",
+  "app_type": "hybrid_community_platform",
+  "theme": "Light theme by default with organic earthy warmth, high-contrast accessible typography, and subtle sage/pine accents reflecting Southern Oregon's Klamath Basin landscape. Never use cold sterile tech gradients.",
+  "emotional_archetype": "ARCHETYPE 1: ORGANIC & EARTHY (Trust, Growth, Calm, Community Mutual Aid)",
+  "design_principles": [
+    "Fusion over imitation: Pacific Northwest community cooperative meets high-utility Swiss bulletin clarity and warm tactile pottery/craft texture.",
+    "Content is King: Deep emotional resonance of rural parenting solidarity ('It takes a village, especially across wide counties').",
+    "Radical Utility: Clear, zero-friction request creation, filterable volunteer boards, real-time messaging, safety reporting, and Klamath Basin directories.",
+    "High Contrast & Optical Safety: Every single interactive element and chip has explicit contrast, legible border strokes, and APCA AA compliance."
+  ],
+  "typography": {
+    "font_family_headings": "Outfit, Merriweather, Georgia, serif",
+    "font_family_body": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "font_family_mono": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl font-bold tracking-tight text-stone-900 leading-[1.15]",
+      "h2": "text-2xl sm:text-3xl font-semibold tracking-tight text-stone-900",
+      "h3": "text-xl sm:text-2xl font-semibold text-stone-800",
+      "h4": "text-lg sm:text-xl font-medium text-stone-800",
+      "body": "text-base text-stone-700 leading-relaxed",
+      "small_label": "text-xs font-semibold uppercase tracking-wider text-stone-500"
+    },
+    "banned_fonts": ["Inter for headings", "Comic Sans", "Papyrus"]
+  },
+  "colors": {
+    "palette_name": "Klamath Basin Pine & Warm Clay",
+    "background": "#FAFAF7",
+    "surface": "#FFFFFF",
+    "surface_subtle": "#F4F3EE",
+    "surface_border": "#E5E3D8",
+    "primary": {
+      "hex": "#1E3D2F",
+      "name": "Klamath Evergreen Pine",
+      "hover": "#162E23",
+      "text": "#FFFFFF"
+    },
+    "secondary": {
+      "hex": "#D96838",
+      "name": "Cascade Terracotta",
+      "hover": "#BE5527",
+      "text": "#FFFFFF"
+    },
+    "accent_earth": {
+      "hex": "#D4A373",
+      "name": "High Desert Warm Ochre",
+      "light": "#FDF8F0"
+    },
+    "accent_sage": {
+      "hex": "#588157",
+      "name": "Oregon Sage",
+      "light": "#EBF2EC"
+    },
+    "neutral_dark": "#1C1917",
+    "neutral_muted": "#57534E",
+    "status": {
+      "open": { "bg": "#ECFDF5", "border": "#A7F3D0", "text": "#065F46" },
+      "in_progress": { "bg": "#EFF6FF", "border": "#BFDBFE", "text": "#1E40AF" },
+      "completed": { "bg": "#F5F5F4", "border": "#E7E5E4", "text": "#44403C" },
+      "urgent": { "bg": "#FEF2F2", "border": "#FECACA", "text": "#991B1B" }
+    }
+  },
+  "visual_enhancers": {
+    "surface_style": "Solid organic surfaces with delicate 1px warm borders (#E5E3D8) and soft layered shadows; glassmorphic sticky headers with backdrop-blur-md bg-[#FAFAF7]/90 and border-b border-[#E5E3D8]. Never 100% transparent headers or dropdowns.",
+    "border_radii": "Rounded-xl (12px) for cards, rounded-full for pills and tags, rounded-lg (8px) for buttons.",
+    "elevation": "shadow-sm for inactive cards, hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 for action items."
+  },
+  "image_urls": [
+    {
+      "category": "hero_banner",
+      "url": "https://images.unsplash.com/photo-1540479859555-17af45c78602?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxwYXJlbnRzJTIwY2hpbGRyZW4lMjBjb21tdW5pdHl8ZW58MHx8fHwxNzkxNDM2MTMzfDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Children in community outdoors in Pacific Northwest",
+      "placement": "Landing page hero background card / village storytelling split visual"
+    },
+    {
+      "category": "community_support",
+      "url": "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwzfHxwYXJlbnRzJTIwY2hpbGRyZW4lMjBjb21tdW5pdHl8ZW58MHx8fHwxNzkxNDM2MTMzfDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Children playing with colorful parachute on grass",
+      "placement": "Parent & Volunteer collaborative story section"
+    },
+    {
+      "category": "volunteer_action",
+      "url": "https://images.unsplash.com/photo-1758599668178-d9716bbda9d5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTN8MHwxfHNlYXJjaHwyfHx2b2x1bnRlZXJzJTIwaGVscGluZyUyMGNvbW11bml0eXxlbnwwfHx8fDE3OTE0MzYxMzN8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Volunteers helping hands in nature outdoors",
+      "placement": "Volunteer onboarding and Request Board header promo"
+    },
+    {
+      "category": "klamath_landscape",
+      "url": "https://images.unsplash.com/photo-1587656421406-273a011cad8d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwxfHxvcmVnb24lMjBuYXR1cmUlMjBwaW5lJTIwZm9yZXN0JTIwbGFrZXxlbnwwfHx8fDE3OTE0MzYxMzN8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Southern Oregon Klamath Basin lake and pine landscape",
+      "placement": "Local resources and Klamath County directory banner"
+    }
+  ],
+  "components_and_structure": {
+    "header_nav": {
+      "component_path": "/app/frontend/src/components/Navbar.js",
+      "requirements": "Sticky navigation with non-transparent backdrop (bg-[#FAFAF7]/95 backdrop-blur-md border-b border-stone-200/80). Visible brand badge 'Parent Link — The Village', Klamath County indicator, navigation links (Dashboard/Feed, Volunteer Board, Local Resources, Business Directory, Safety Hub, Admin), Notification bell with count badge, Role toggle/switch, and User Auth state dropdown."
+    },
+    "landing_page": {
+      "component_path": "/app/frontend/src/pages/LandingPage.js",
+      "requirements": "High emotional impact hero highlighting mutual aid for Klamath County families (Klamath Falls, Henley, Merrill, Malin, Chiloquin, Bonanza). Clear CTAs: 'Ask for Help' and 'Become a Volunteer Neighbor'. Quick category preview chips (Rides, Groceries, Laundry, School Runs, Childcare backup, Meals). Real community testimonials and local Klamath resource highlights."
+    },
+    "auth_modal": {
+      "component_path": "/app/frontend/src/components/AuthModal.js",
+      "requirements": "Tabbed Email/Password + Mocked Google One-Click Login. Essential Role Selection during signup (Parent / Caregiver or Volunteer Neighbor or Dual Role), with optional neighborhood selection within Klamath County."
+    },
+    "parent_dashboard": {
+      "component_path": "/app/frontend/src/pages/ParentDashboard.js",
+      "requirements": "Create Request trigger with modal supporting categories: Ride, Laundry help, Groceries, School activities, Childcare, Meals, Other. Urgency indicator, location in Klamath County, date needed, notes. List of active user requests with real-time status (Open, Accepted, In Progress, Completed), volunteer matched preview, and direct chat thread opener."
+    },
+    "volunteer_board": {
+      "component_path": "/app/frontend/src/pages/VolunteerBoard.js",
+      "requirements": "Filter by Category (Ride, Groceries, Laundry, School, etc.), Klamath neighborhood, and urgency. Single-click 'Accept Request' button with instant notification dispatch. Ability to view request details, safety badges, and start cooperative communication."
+    },
+    "request_detail_and_chat": {
+      "component_path": "/app/frontend/src/components/RequestDetailChatModal.js",
+      "requirements": "Full request context card + interactive per-request chat thread for coordinating pickup times, grocery lists, or dropoff specifics. Status transition buttons (Accept, Mark In-Progress, Complete). Integrated Safety 'Report Request/User' action."
+    },
+    "safety_hub": {
+      "component_path": "/app/frontend/src/pages/SafetyHub.js",
+      "requirements": "Clear guidelines: Public meeting points, non-medical disclaimer, emergency contact protocols (911 & 211 Info), verified volunteer checklist, guidelines for transporting minors with booster seats, and Report Incident Form."
+    },
+    "local_resources_directory": {
+      "component_path": "/app/frontend/src/pages/LocalResources.js",
+      "requirements": "Pre-seeded with real Klamath County community entities: Klamath & Lake Community Action Services (KLCAS), Integral Youth Services (IYS), Klamath County Family Food Pantries, United Way Klamath Basin 211, Klamath Library Family Programs, Central Oregon Disability Support Network (CODSN). Search by keyword + filter by category (Food, Housing/Utilities, Youth, Crisis)."
+    },
+    "business_directory": {
+      "component_path": "/app/frontend/src/pages/BusinessDirectory.js",
+      "requirements": "Local Klamath County family-supportive businesses, daycare providers, laundromats, community markets, and family clinics. Includes 'Suggest a Business / Org' form modal that directly feeds into the platform."
+    },
+    "admin_panel": {
+      "component_path": "/app/frontend/src/pages/AdminPanel.js",
+      "requirements": "Review & approve community suggested business listings, inspect flagged safety reports, moderate live requests, and toggle user status. Clear status action buttons with toaster confirmation."
+    },
+    "notifications_popover": {
+      "component_path": "/app/frontend/src/components/NotificationPopover.js",
+      "requirements": "Interactive notification bell in navbar showing acceptance alerts, new chat messages, and volunteer confirmations with mark-all-as-read."
+    }
+  },
+  "testing_and_data_attributes": {
+    "mandatory_rule": "Every button, link, tab, input, select, card, modal, and key state element MUST contain explicit `data-testid` kebab-case attributes.",
+    "examples": [
+      "data-testid='navbar-logo'",
+      "data-testid='nav-link-requests'",
+      "data-testid='nav-link-volunteer'",
+      "data-testid='nav-link-resources'",
+      "data-testid='nav-link-businesses'",
+      "data-testid='nav-link-safety'",
+      "data-testid='nav-link-admin'",
+      "data-testid='notification-bell-btn'",
+      "data-testid='auth-open-btn'",
+      "data-testid='role-toggle-selector'",
+      "data-testid='create-request-btn'",
+      "data-testid='create-request-submit-btn'",
+      "data-testid='request-card-{id}'",
+      "data-testid='accept-request-btn-{id}'",
+      "data-testid='open-chat-btn-{id}'",
+      "data-testid='send-chat-msg-btn'",
+      "data-testid='report-user-btn'",
+      "data-testid='suggest-listing-btn'",
+      "data-testid='suggest-listing-submit-btn'",
+      "data-testid='admin-approve-listing-btn-{id}'",
+      "data-testid='admin-resolve-report-btn-{id}'"
+    ]
+  },
+  "universal_guidelines_for_main_agent": [
+    "Tone & Feel: Grounded, warm, deeply compassionate, never corporate-generic. Southern Oregon / Klamath County specific tone.",
+    "No pure black #000000; use warm tint #1C1917. No generic cold blue or purple gradients.",
+    "All navigation and overlays MUST have solid/frosted opaque backgrounds (min 90% opacity) so text never collides with backgrounds.",
+    "All mock endpoints or local mock storage must have realistic seed data for Klamath County (Klamath Falls, Suburban, Falcon Heights, Henley, Chiloquin, Midland).",
+    "Ensure complete responsive layout: mobile-first navigation menu, comfortable touch targets (min 44px), zero horizontal overflow.",
+    "Use Sonner for toasts: on request creation, request accepted, new chat message, report submitted, and listing approved."
+  ]
+}
