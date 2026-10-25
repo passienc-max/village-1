@@ -19,6 +19,9 @@ class ProfileIn(BaseModel):
     neighborhood: Optional[str] = None
     role: Optional[str] = None
     email_notifications: Optional[bool] = None
+    availability: Optional[str] = Field(default=None, max_length=300)
+    help_categories: Optional[list[str]] = None
+    offers_rides: Optional[bool] = None
 
 
 @router.put("/profile")
@@ -29,6 +32,8 @@ async def update_profile(body: ProfileIn, user: dict = Depends(get_current_user)
             updates.pop("role")
         elif updates["role"] not in ROLES:
             raise HTTPException(status_code=400, detail="Invalid role")
+    if any(c not in CATEGORIES for c in updates.get("help_categories", [])):
+        raise HTTPException(status_code=400, detail="Unknown help category")
     if updates.get("neighborhood") and updates["neighborhood"] not in NEIGHBORHOODS:
         raise HTTPException(status_code=400, detail="Unknown community")
     if updates:
@@ -44,6 +49,11 @@ async def get_user_profile(user_id: str, _: dict = Depends(get_current_user)):
     out = public_user(u)
     out["helped_count"] = await db.requests.count_documents({"volunteer_id": user_id, "status": "completed"})
     out["requests_count"] = await db.requests.count_documents({"parent_id": user_id})
+    agg = await db.reviews.aggregate([{"$match": {"target_id": user_id}},
+                                      {"$group": {"_id": None, "avg": {"$avg": "$rating"}, "n": {"$sum": 1}}}]).to_list(1)
+    out["rating_avg"] = round(agg[0]["avg"], 1) if agg else None
+    out["rating_count"] = agg[0]["n"] if agg else 0
+    out["references_count"] = await db.references.count_documents({"user_id": user_id, "status": "submitted"})
     return out
 
 
@@ -132,6 +142,8 @@ async def accept_request(request_id: str, user: dict = Depends(get_current_user)
     r = await _get_request(request_id)
     if r["parent_id"] == user["user_id"]:
         raise HTTPException(status_code=400, detail="You can't accept your own request")
+    if r["category"] == "ride" and user.get("driver_status") != "approved" and user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Only verified drivers can accept ride requests. Submit your driver's license, insurance and a selfie for review.")
     res = await db.requests.update_one(
         {"request_id": request_id, "status": "open"},
         {"$set": {"status": "accepted", "volunteer_id": user["user_id"],
@@ -163,6 +175,9 @@ async def update_status(request_id: str, body: StatusIn, user: dict = Depends(ge
     else:
         raise HTTPException(status_code=400, detail="That action isn't available right now")
     await db.requests.update_one({"request_id": request_id}, {"$set": updates})
+    if a in ("completed", "cancelled", "withdraw"):
+        await db.ride_locations.delete_many({"request_id": request_id})
+        await db.share_links.update_many({"request_id": request_id}, {"$set": {"active": False}})
     labels = {"in_progress": "is now in progress", "completed": "was marked complete",
               "cancelled": "was cancelled", "withdraw": "is open again — the volunteer had to step back"}
     other = r.get("volunteer_id") if uid == r["parent_id"] else r["parent_id"]

@@ -17,7 +17,7 @@ const Hero = ({ user }) => (
         Raising kids takes a village. <span className="text-[#1E3D2F]">Here's yours.</span>
       </h1>
       <p className="mt-6 max-w-xl text-base text-stone-700 sm:text-lg">
-        Parent Link connects parents and caregivers with trusted volunteer neighbors for rides, groceries, laundry, school activities and more, from Klamath Falls to Chiloquin.
+        Parent Link connects parents and caregivers with local volunteers for rides, groceries, laundry, school activities and more, from Klamath Falls to Chiloquin.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link to={user ? "/dashboard" : "/register?role=parent"} data-testid="hero-ask-help-btn"

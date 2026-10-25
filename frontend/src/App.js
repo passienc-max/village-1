@@ -13,7 +13,11 @@ import Dashboard from "@/pages/Dashboard";
 import VolunteerBoard from "@/pages/VolunteerBoard";
 import RequestDetail from "@/pages/RequestDetail";
 import Profile from "@/pages/Profile";
-import UserProfile from "@/pages/UserProfile";
+import PublicProfile from "@/pages/PublicProfile";
+import DriverVerification from "@/pages/DriverVerification";
+import TrackPage from "@/pages/TrackPage";
+import ReferenceFormPage from "@/pages/ReferenceFormPage";
+import HelperChat from "@/pages/HelperChat";
 import SafetyHub from "@/pages/SafetyHub";
 import AdminPanel from "@/pages/AdminPanel";
 import { LocalResources, BusinessDirectory } from "@/pages/Directories";
@@ -45,7 +49,11 @@ function AppRouter() {
         <Route path="/board" element={guard(<VolunteerBoard />)} />
         <Route path="/requests/:id" element={guard(<RequestDetail />)} />
         <Route path="/profile" element={guard(<Profile />)} />
-        <Route path="/users/:id" element={guard(<UserProfile />)} />
+        <Route path="/users/:id" element={guard(<PublicProfile />)} />
+        <Route path="/driver-verification" element={guard(<DriverVerification />)} />
+        <Route path="/helper" element={guard(<HelperChat />)} />
+        <Route path="/track/:token" element={<TrackPage />} />
+        <Route path="/reference/:token" element={<ReferenceFormPage />} />
         <Route path="/admin" element={guard(<AdminPanel />, true)} />
         <Route path="*" element={<LandingPage />} />
       </Route>

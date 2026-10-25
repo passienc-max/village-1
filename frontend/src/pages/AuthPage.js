@@ -34,7 +34,7 @@ export default function AuthPage({ mode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: params.get("role") || "parent", neighborhood: "Klamath Falls" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: params.get("role") || "parent", neighborhood: "Klamath Falls", offers_rides: false });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const isRegister = mode === "register";
@@ -51,7 +51,8 @@ export default function AuthPage({ mode }) {
     try {
       if (isRegister) await register(form);
       else await login(form.email, form.password);
-      navigate(location.state?.from || "/dashboard");
+      const wantsRides = isRegister && form.offers_rides && form.role !== "parent";
+      navigate(wantsRides ? "/driver-verification" : location.state?.from || "/dashboard");
     } catch (err) {
       setError(formatApiError(err));
     } finally {
@@ -83,6 +84,12 @@ export default function AuthPage({ mode }) {
             {isRegister && (
               <>
                 <div className="space-y-1.5"><Label>I want to...</Label><RolePicker value={form.role} onChange={set("role")} /></div>
+                {form.role !== "parent" && (
+                  <label className="flex items-start gap-3 rounded-lg border border-[#E5E3D8] bg-white p-3 text-sm" data-testid="register-offers-rides">
+                    <input type="checkbox" checked={form.offers_rides} onChange={(e) => setForm((f) => ({ ...f, offers_rides: e.target.checked }))} className="mt-1 h-4 w-4 accent-[#1E3D2F]" data-testid="register-offers-rides-checkbox" />
+                    <span><span className="font-semibold text-stone-900">I'd like to offer rides</span><span className="block text-xs text-stone-500">Next, you'll verify your driver's license, vehicle insurance and a selfie. You can't give rides until an admin approves.</span></span>
+                  </label>
+                )}
                 <div className="space-y-1.5">
                   <Label>Your community</Label>
                   <Select value={form.neighborhood} onValueChange={set("neighborhood")}>

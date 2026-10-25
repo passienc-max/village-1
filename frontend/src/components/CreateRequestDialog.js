@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { api, formatApiError } from "@/lib/api";
 import { CATEGORIES, NEIGHBORHOODS } from "@/lib/constants";
+import { AiDraftHelper } from "@/components/AiDraftHelper";
 
 const empty = (hood) => ({ category: "ride", title: "", description: "", neighborhood: hood || "Klamath Falls",
   location_note: "", needed_date: "", needed_time: "", urgency: "normal" });
@@ -60,6 +61,7 @@ export const CreateRequestDialog = ({ user, onCreated }) => {
           <DialogDescription>Only share a general area. Exact addresses go in the private chat once a volunteer accepts.</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="space-y-4">
+          <AiDraftHelper onDraft={(d) => setForm((f) => ({ ...f, ...d }))} />
           <div className="grid grid-cols-2 gap-3">
             <Field label="Type of help"><PickSelect testId="request-category-select" value={form.category} onChange={set("category")} options={CATEGORIES} /></Field>
             <Field label="Urgency"><PickSelect testId="request-urgency-select" value={form.urgency} onChange={set("urgency")} options={[{ value: "normal", label: "Normal" }, { value: "urgent", label: "Urgent" }]} /></Field>

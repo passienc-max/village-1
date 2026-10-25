@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { HandHeart } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,6 +24,8 @@ export default function VolunteerBoard() {
   const [items, setItems] = useState([]);
   const [f, setF] = useState({ category: ALL, neighborhood: ALL, urgency: ALL });
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const verified = user.driver_status === "approved" || user.role === "admin";
 
   const load = useCallback(() => {
     const params = Object.fromEntries(Object.entries(f).filter(([, v]) => v !== ALL));
@@ -58,15 +61,22 @@ export default function VolunteerBoard() {
         <Filter testId="board-filter-neighborhood" value={f.neighborhood} onChange={set("neighborhood")} placeholder="All communities" options={NEIGHBORHOODS.map((n) => ({ value: n, label: n }))} />
         <Filter testId="board-filter-urgency" value={f.urgency} onChange={set("urgency")} placeholder="Any urgency" options={[{ value: "urgent", label: "Urgent only" }, { value: "normal", label: "Normal" }]} />
       </div>
+      {!verified && (
+        <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" data-testid="board-verify-banner">
+          Ride requests can only be accepted by verified drivers. <Link to="/driver-verification" className="font-semibold underline">Verify your license, insurance and selfie</Link>.
+        </div>
+      )}
       <p className="mt-6 text-sm text-stone-500" data-testid="board-count">{items.length} open request{items.length === 1 ? "" : "s"}</p>
       <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {items.map((r) => (
-          <RequestCard key={r.request_id} r={r} showPerson="parent" action={
+          <RequestCard key={r.request_id} r={r} showPerson="parent" action={r.category === "ride" && !verified ? (
+            <Link to="/driver-verification" data-testid={`verify-to-accept-btn-${r.request_id}`} className="rounded-lg bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-200">Verify to accept</Link>
+          ) : (
             <button onClick={() => accept(r.request_id)} data-testid={`accept-request-btn-${r.request_id}`}
               className="inline-flex items-center gap-1.5 rounded-lg bg-[#1E3D2F] px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#162E23]">
               <HandHeart className="h-4 w-4" /> Accept
             </button>
-          } />
+          )} />
         ))}
       </div>
       {items.length === 0 && (

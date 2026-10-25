@@ -21,6 +21,7 @@ class RegisterIn(BaseModel):
     password: str = Field(min_length=8, max_length=128)
     role: str
     neighborhood: Optional[str] = None
+    offers_rides: bool = False
 
 
 class LoginIn(BaseModel):
@@ -52,7 +53,8 @@ async def register(body: RegisterIn, response: Response):
         "password_hash": hash_password(body.password), "role": body.role,
         "neighborhood": body.neighborhood, "bio": "", "picture": None,
         "email_notifications": True, "suspended": False, "auth_provider": "email",
-        "created_at": now_iso(),
+        "offers_rides": body.offers_rides and body.role != "parent", "driver_status": "none",
+        "availability": "", "help_categories": [], "created_at": now_iso(),
     }
     await db.users.insert_one(dict(user))
     set_auth_cookies(response, user["user_id"], email)

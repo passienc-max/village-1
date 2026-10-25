@@ -7,6 +7,7 @@ import { ROLE_LABELS, timeAgo } from "@/lib/constants";
 import { ListingCard } from "@/components/ListingCard";
 import { ListingForm } from "@/components/ListingForm";
 import { StatusBadge } from "@/components/StatusBadge";
+import { SecureImage } from "@/components/SecureImage";
 
 const run = async (fn, msg, after) => {
   try { await fn(); toast.success(msg); after(); } catch (e) { toast.error(formatApiError(e)); }
@@ -111,18 +112,53 @@ const RequestsTable = ({ items, reload }) => (
   </div>
 );
 
+const DriverCard = ({ v, reload }) => {
+  const [note, setNote] = useState("");
+  const decide = (dec) => run(() => api.post(`/admin/driver-verifications/${v.verification_id}/${dec}`, { admin_note: note }), dec === "approve" ? "Driver approved" : "Driver rejected", reload);
+  return (
+    <div className="rounded-xl border border-[#E5E3D8] bg-white p-5" data-testid={`admin-driver-${v.verification_id}`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="font-semibold text-stone-900"><Link to={`/users/${v.user_id}`} className="hover:underline">{v.user_name}</Link> <span className="font-normal text-stone-500">· {v.user_email}</span></p>
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${v.status === "pending" ? "bg-amber-50 text-amber-800" : v.status === "approved" ? "bg-emerald-50 text-emerald-800" : "bg-red-50 text-red-800"}`}>{v.status}</span>
+      </div>
+      {v.vehicle && <p className="mt-1 text-sm text-stone-600">Vehicle: {v.vehicle}</p>}
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        {["license", "insurance", "selfie"].map((k) => (
+          <div key={k}><SecureImage fileId={v.files[k]} alt={k} className="h-32 w-full rounded-lg" testId={`admin-driver-${k}-img`} /><p className="mt-1 text-center text-xs capitalize text-stone-500">{k}</p></div>
+        ))}
+      </div>
+      {v.status === "pending" && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note to driver (optional)" className="h-9 flex-1 rounded-lg border border-[#E5E3D8] px-3 text-sm" data-testid="admin-driver-note-input" />
+          <Btn data-testid={`admin-approve-driver-btn-${v.verification_id}`} onClick={() => decide("approve")}>Approve</Btn>
+          <Btn data-testid={`admin-reject-driver-btn-${v.verification_id}`} className="border border-red-200 text-red-700 hover:bg-red-50" onClick={() => decide("reject")}>Reject</Btn>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Drivers = ({ items, reload }) => (
+  <div className="grid gap-4 lg:grid-cols-2">
+    {items.length === 0 && <p className="text-sm text-stone-500">No driver verifications yet.</p>}
+    {items.map((v) => <DriverCard key={v.verification_id} v={v} reload={reload} />)}
+  </div>
+);
+
 export default function AdminPanel() {
-  const [d, setD] = useState({ stats: {}, reports: [], listings: [], users: [], requests: [] });
+  const [d, setD] = useState({ stats: {}, reports: [], listings: [], users: [], requests: [], drivers: [] });
   const load = useCallback(async () => {
     const [stats, reports, listings, users, requests] = await Promise.all(
       ["/admin/stats", "/admin/reports", "/admin/listings", "/admin/users", "/admin/requests"].map((u) => api.get(u).then((r) => r.data)));
-    setD({ stats, reports, listings, users, requests });
+    const drivers = await api.get("/admin/driver-verifications").then((r) => r.data);
+    setD({ stats, reports, listings, users, requests, drivers });
   }, []);
   useEffect(() => { load().catch((e) => toast.error(formatApiError(e))); }, [load]);
 
   const pending = d.listings.filter((l) => l.status === "pending");
   const tabs = [
     ["reports", `Reports (${d.reports.filter((r) => r.status === "open").length})`, <Reports items={d.reports} reload={load} />],
+    ["drivers", `Drivers (${d.drivers.filter((v) => v.status === "pending").length})`, <Drivers items={d.drivers} reload={load} />],
     ["pending", `Suggestions (${pending.length})`, <Listings items={pending} reload={load} />],
     ["listings", "All listings", <Listings items={d.listings.filter((l) => l.status === "approved")} reload={load} />],
     ["add", "Add listing", <AddListing reload={load} />],

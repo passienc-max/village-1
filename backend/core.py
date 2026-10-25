@@ -120,7 +120,8 @@ def is_parent(user: dict) -> bool:
 
 
 def public_user(u: dict) -> dict:
-    keys = ["user_id", "name", "role", "neighborhood", "bio", "picture", "created_at"]
+    keys = ["user_id", "name", "role", "neighborhood", "bio", "picture", "created_at",
+            "driver_status", "availability", "help_categories", "offers_rides"]
     return {k: u.get(k) for k in keys}
 
 
@@ -141,12 +142,15 @@ def _email_html(name: str, body: str, link: str) -> str:
     )
 
 
-async def _send_notification_email(user: dict, title: str, body: str, link: str):
+async def _send_templated(to: str, name: str, title: str, body: str, link: str):
     try:
-        await send_email(to=user["email"], subject=f"{title} | {EMAIL_FROM_NAME}",
-                         html=_email_html(user.get("name"), body, link))
+        await send_email(to=to, subject=f"{title} | {EMAIL_FROM_NAME}", html=_email_html(name, body, link))
     except Exception as e:
-        logger.error(f"Notification email failed: {e}")
+        logger.error(f"Templated email failed: {e}")
+
+
+def queue_email(to: str, name: str, title: str, body: str, link: str):
+    asyncio.create_task(_send_templated(to, name, title, body, link))
 
 
 async def notify(user_id: str, ntype: str, title: str, body: str, link: str, email: bool = False):
@@ -158,7 +162,7 @@ async def notify(user_id: str, ntype: str, title: str, body: str, link: str, ema
         return
     u = await db.users.find_one({"user_id": user_id}, {"_id": 0, "email": 1, "name": 1, "email_notifications": 1})
     if u and u.get("email_notifications", True):
-        asyncio.create_task(_send_notification_email(u, title, body, link))
+        queue_email(u["email"], u.get("name"), title, body, link)
 
 
 async def notify_admins(ntype: str, title: str, body: str, link: str):

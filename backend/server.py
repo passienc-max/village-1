@@ -13,6 +13,10 @@ from core import client
 from auth_routes import router as auth_router
 from routes import router as main_router
 from admin_routes import router as admin_router
+from trust_routes import router as trust_router
+from community_routes import router as community_router
+from ai_routes import router as ai_router
+from storage import init_storage
 from seed import seed_admin, seed_listings, create_indexes
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -38,6 +42,9 @@ async def root():
 app.include_router(auth_router)
 app.include_router(main_router)
 app.include_router(admin_router)
+app.include_router(trust_router)
+app.include_router(community_router)
+app.include_router(ai_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,6 +60,10 @@ async def startup():
     await create_indexes()
     await seed_admin()
     await seed_listings()
+    try:
+        init_storage()
+    except Exception as e:
+        logging.getLogger(__name__).error(f"Storage init failed: {e}")
 
 
 @app.on_event("shutdown")

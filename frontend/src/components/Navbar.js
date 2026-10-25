@@ -13,6 +13,7 @@ const useLinks = (user) => [
   { to: "/resources", label: "Local Resources", id: "nav-link-resources" },
   { to: "/businesses", label: "Businesses", id: "nav-link-businesses" },
   { to: "/safety", label: "Safety", id: "nav-link-safety" },
+  user && { to: "/helper", label: "Village Helper", id: "nav-link-helper" },
   user?.role === "admin" && { to: "/admin", label: "Admin", id: "nav-link-admin" },
 ].filter(Boolean);
 

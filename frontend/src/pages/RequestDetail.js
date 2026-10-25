@@ -8,6 +8,7 @@ import { canVolunteer, categoryOf } from "@/lib/constants";
 import { StatusBadge, UrgentBadge } from "@/components/StatusBadge";
 import { ReportDialog } from "@/components/ReportDialog";
 import { ChatPanel } from "@/components/ChatPanel";
+import { LocationPanel } from "@/components/LocationPanel";
 
 const ActionBtn = ({ onClick, children, testId, variant = "primary" }) => {
   const cls = { primary: "bg-[#1E3D2F] text-white hover:bg-[#162E23]", accent: "bg-[#D96838] text-white hover:bg-[#BE5527]", ghost: "border border-[#E5E3D8] text-stone-800 hover:bg-[#F4F3EE]" }[variant];
@@ -89,7 +90,8 @@ export default function RequestDetail() {
             <Link to="/safety" className="text-sm font-medium text-stone-600 underline-offset-2 hover:underline" data-testid="request-safety-link">Safety guidelines</Link>
           </div>
         </div>
-        <div>
+        <div className="space-y-6">
+          {isParticipant && r.volunteer_id && ["accepted", "in_progress"].includes(r.status) && <LocationPanel requestId={r.request_id} />}
           {r.volunteer_id && (isParticipant || user.role === "admin") ? (
             <ChatPanel requestId={r.request_id} me={user.user_id} canSend={isParticipant && !["completed", "cancelled"].includes(r.status)} />
           ) : (
